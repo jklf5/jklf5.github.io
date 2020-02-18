@@ -46,15 +46,26 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="jklf5">
-<meta property="og:url" content="http://yoursite.com/tags/配置静态文件/index.html">
+  <meta name="description" content="步骤 11、在 SQLSERVER Mangerment Studio 中右键连接：">
+<meta name="keywords" content="SQL SERVER,数据库远程连接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL SERVER远程连接">
+<meta property="og:url" content="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/index.html">
 <meta property="og:site_name" content="jklf5">
+<meta property="og:description" content="步骤 11、在 SQLSERVER Mangerment Studio 中右键连接：">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/1-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/1-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/4.png">
+<meta property="og:updated_time" content="2020-02-18T14:02:05.564Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jklf5">
+<meta name="twitter:title" content="SQL SERVER远程连接">
+<meta name="twitter:description" content="步骤 11、在 SQLSERVER Mangerment Studio 中右键连接：">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/1-1.png">
 
-<link rel="canonical" href="http://yoursite.com/tags/配置静态文件/">
+<link rel="canonical" href="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/">
 
 
 <script id="page-configurations">
@@ -62,11 +73,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>标签: 配置静态文件 | jklf5</title>
+  <title>SQL SERVER远程连接 | jklf5</title>
   
 
 
@@ -184,50 +195,107 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">配置静态文件
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/18/SQL-SERVER远程连接/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="jklf5">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jklf5">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL SERVER远程连接
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-18 21:48:35 / 修改时间：22:02:05" itemprop="dateCreated datePublished" datetime="2020-02-18T21:48:35+08:00">2020-02-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/环境、IDE配置/" itemprop="url" rel="index">
+                    <span itemprop="name">环境、IDE配置</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <h5 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤 1"></a>步骤 1</h5><p>1、在 SQLSERVER Mangerment Studio 中右键连接：</p>
+<p><img src="/2020/02/18/SQL-SERVER远程连接/1-1.png" alt="1-1"></p>
+<a id="more"></a>
+<p><img src="/2020/02/18/SQL-SERVER远程连接/1-2.png" alt="1-2"></p>
+<h5 id="步骤-2"><a href="#步骤-2" class="headerlink" title="步骤 2"></a>步骤 2</h5><p>2、进入配置管理器，<label style="color:red">打开 TC/IP 服务</label>，设置端口：1433</p>
+<p><img src="/2020/02/18/SQL-SERVER远程连接/2.png" alt="2"></p>
+<h5 id="步骤-3"><a href="#步骤-3" class="headerlink" title="步骤 3"></a>步骤 3</h5><p>3、打开 cmd，输入命名 telnet 服务器 ip SQLSERVER 端口号，一闪而过是对的，如果连不上，<label style="color:red">要注意防火墙是否允许，端口是否打开</label></p>
+<p><img src="/2020/02/18/SQL-SERVER远程连接/3.png" alt="3"></p>
+<label style="color:red">注意像阿里云类似的服务器中，默认关闭 1433 端口，需要在安全组规则中开放 1433 端口的入方向</label>
+
+<h5 id="步骤-4"><a href="#步骤-4" class="headerlink" title="步骤 4"></a>步骤 4</h5><p>4、接着就可以在 VS 中，SQLSERVER Mangerment Studio 中连接了，<label style="color:red">服务器名称：IP 地址,1433\实例名</label><br><img src="/2020/02/18/SQL-SERVER远程连接/4.png" alt="4"></p>
+<p>参考：<a href="https://blog.csdn.net/yenange/article/details/50853083" target="_blank" rel="noopener">https://blog.csdn.net/yenange/article/details/50853083</a></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-02-18T19:14:32+08:00"
-              content="2020-02-18">
-          02-18
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SQL-SERVER/" rel="tag"># SQL SERVER</a>
+              <a href="/tags/数据库远程连接/" rel="tag"># 数据库远程连接</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/02/18/Django配置静态文件/" itemprop="url">
-            <span itemprop="name">Django 配置静态文件</span>
-          </a>
-      </h2>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/18/Django配置静态文件/" rel="prev" title="Django 配置静态文件">
+      <i class="fa fa-chevron-left"></i> Django 配置静态文件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/18/模2除法（CRC检验码）/" rel="next" title="模2除法（CRC检验码）">
+      模2除法（CRC检验码） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -278,6 +346,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤-1"><span class="nav-number">1.</span> <span class="nav-text">步骤 1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤-2"><span class="nav-number">2.</span> <span class="nav-text">步骤 2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤-3"><span class="nav-number">3.</span> <span class="nav-text">步骤 3</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤-4"><span class="nav-number">4.</span> <span class="nav-text">步骤 4</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
