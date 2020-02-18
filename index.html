@@ -189,7 +189,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/18/Django-配置静态文件/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/18/Django配置静态文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -203,7 +203,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/18/Django-配置静态文件/" class="post-title-link" itemprop="url">Django 配置静态文件</a>
+            <a href="/2020/02/18/Django配置静态文件/" class="post-title-link" itemprop="url">Django 配置静态文件</a>
         </h1>
 
         <div class="post-meta">
@@ -214,7 +214,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-18 19:14:32 / 修改时间：19:35:17" itemprop="dateCreated datePublished" datetime="2020-02-18T19:14:32+08:00">2020-02-18</time>
+              <time title="创建时间：2020-02-18 19:14:32 / 修改时间：21:40:17" itemprop="dateCreated datePublished" datetime="2020-02-18T19:14:32+08:00">2020-02-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,12 +239,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>最重要的：Django要在开启debug模式才会加载静态文件，关闭debug情况下需要使用解析服务（个人使用Apache）</p>
-<h3 id="环境："><a href="#环境：" class="headerlink" title="环境："></a>环境：</h3><pre><code>系统：Windows10
-Python：3.6
-Django：2.0.2
-Apache：2.4
-</code></pre>
+          <p>最重要的：Django 要在开启 debug 模式才会加载静态文件，关闭 debug 情况下需要使用解析服务（个人使用 Apache）</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/18/Django配置静态文件/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -288,7 +291,7 @@ Apache：2.4
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-18 19:14:14 / 修改时间：20:13:32" itemprop="dateCreated datePublished" datetime="2020-02-18T19:14:14+08:00">2020-02-18</time>
+              <time title="创建时间：2020-02-18 19:14:14 / 修改时间：21:27:11" itemprop="dateCreated datePublished" datetime="2020-02-18T19:14:14+08:00">2020-02-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -313,18 +316,17 @@ Apache：2.4
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述:"></a>题目描述:</h3><p>我们今日大多数时候习惯于使用阿拉伯数字，但是同时有时候我们还会使用一种数字——罗马数字。传统罗马数字用单个字母表示特定的数值，I表示1，V表示5，X表示10，L表示50，C表示100，D表示500，M表示1000。</p>
-<p>最多3个同样的I,X,C或M可以连续出现表示一个数字，V,L,D则不在一个数字中连续出现。例如II表示2，CCC表示300。但是要注意，IIII就不能表示4。有时，一个可表示为10n的数出现在一个比它大1级或2级的数前(I在V或X前面，X在L或C前面，等等)，数值等于后面的那个数减去前面的那个数，例如IV表示4，XL表示40等（像XD, IC, 和XM这样的表达是非法的，因为前面的数比后面的数小太多）。</p>
+          <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述:"></a>题目描述:</h3><p>我们今日大多数时候习惯于使用阿拉伯数字，但是同时有时候我们还会使用一种数字——罗马数字。传统罗马数字用单个字母表示特定的数值，I 表示 1，V 表示 5，X 表示 10，L 表示 50，C 表示 100，D 表示 500，M 表示 1000。</p>
+<p>最多 3 个同样的 I,X,C 或 M 可以连续出现表示一个数字，V,L,D 则不在一个数字中连续出现。例如 II 表示 2，CCC 表示 300。但是要注意，IIII 就不能表示 4。有时，一个可表示为 10n 的数出现在一个比它大 1 级或 2 级的数前(I 在 V 或 X 前面，X 在 L 或 C 前面，等等)，数值等于后面的那个数减去前面的那个数，例如 IV 表示 4，XL 表示 40 等（像 XD, IC, 和 XM 这样的表达是非法的，因为前面的数比后面的数小太多）。</p>
 <p>除了“CCLXVIII = 100+100+50+10+5+1+1+1 = 268”，一般来说，字符以递减的顺序接连出现。</p>
-<p>输入包括一行，为一个给定的N(1≤N≤3500)。</p>
-<p>输出包括多行，第一行为1,2…N这些数字的罗马数字表示中I出现的次数，并在前面加上“I ”。第二行为1,2…N这些数字的罗马数字表示中V出现的次数，并在前面加上“V ”，接下去依次类推并按从小到大的顺序排列，但请注意不要输出并没有出现过的字符。</p>
-<p>比如N = 5, 那么页码数为: I, II, III, IV, V. 总共有7个I出现，2个V出现，输出结果如样例。</p>
-<h3 id="样例输入"><a href="#样例输入" class="headerlink" title="样例输入"></a>样例输入</h3><pre><code>5
-</code></pre><h3 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h3><pre><code>I 7
-V 2
-</code></pre><h3 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h3><p>&emsp;&emsp;将对应的数字都转换成罗马数字，每转换一次就统计一下里面所包含各字母的个数。</p>
-<h3 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">//https://nanti.jisuanke.com/t/32</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">long long I=0,V=0,X=0,L=0,C=0,D=0,M=0;</span><br><span class="line">void IntToRome(int i)</span><br><span class="line">&#123;</span><br><span class="line">	int a,b;</span><br><span class="line">	int len;</span><br><span class="line">	int j;</span><br><span class="line">	string temp;</span><br><span class="line">	string basic[4][10]=&#123;</span><br><span class="line">			 &#123;&quot;&quot;,&quot;I&quot;,&quot;II&quot;,&quot;III&quot;,&quot;IV&quot;,&quot;V&quot;,&quot;VI&quot;,&quot;VII&quot;,&quot;VIII&quot;,&quot;IX&quot;&#125;,</span><br><span class="line">		            &#123;&quot;&quot;,&quot;X&quot;,&quot;XX&quot;,&quot;XXX&quot;,&quot;XL&quot;,&quot;L&quot;,&quot;LX&quot;,&quot;LXX&quot;,&quot;LXXX&quot;,&quot;XC&quot;&#125;,</span><br><span class="line">		            &#123;&quot;&quot;,&quot;C&quot;,&quot;CC&quot;,&quot;CCC&quot;,&quot;CD&quot;,&quot;D&quot;,&quot;DC&quot;,&quot;DCC&quot;,&quot;DCCC&quot;,&quot;CM&quot;&#125;,</span><br><span class="line">		            &#123;&quot;&quot;,&quot;M&quot;,&quot;MM&quot;,&quot;MMM&quot;&#125;</span><br><span class="line">					&#125;;</span><br><span class="line">	</span><br><span class="line">	temp.append(basic[3][i / 1000 % 10]);</span><br><span class="line">	temp.append(basic[2][i / 100 % 10]);</span><br><span class="line">	temp.append(basic[1][i / 10 % 10]);</span><br><span class="line">	temp.append(basic[0][i % 10]);</span><br><span class="line">	</span><br><span class="line">	len=temp.size();</span><br><span class="line">	for(j=0;j&lt;len;j++)</span><br><span class="line">	&#123;</span><br><span class="line">		if(temp[j]==&apos;I&apos;)</span><br><span class="line">			++I;</span><br><span class="line">		else if(temp[j]==&apos;V&apos;)</span><br><span class="line">			++V;</span><br><span class="line">		else if(temp[j]==&apos;X&apos;)</span><br><span class="line">			++X;</span><br><span class="line">		else if(temp[j]==&apos;L&apos;)</span><br><span class="line">			++L;</span><br><span class="line">		else if(temp[j]==&apos;C&apos;)</span><br><span class="line">			++C;</span><br><span class="line">		else if(temp[j]==&apos;D&apos;)</span><br><span class="line">			++D;</span><br><span class="line">		else if(temp[j]==&apos;M&apos;)</span><br><span class="line">			++M;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int N;</span><br><span class="line">	int i;</span><br><span class="line">	cin&gt;&gt;N;</span><br><span class="line">	for(i=1;i&lt;=N;i++)</span><br><span class="line">		IntToRome(i);</span><br><span class="line">	if(I!=0)</span><br><span class="line">		cout&lt;&lt;&quot;I &quot;&lt;&lt;I&lt;&lt;endl;</span><br><span class="line">	if(V!=0)</span><br><span class="line">		cout&lt;&lt;&quot;V &quot;&lt;&lt;V&lt;&lt;endl;</span><br><span class="line">	if(X!=0)</span><br><span class="line">		cout&lt;&lt;&quot;X &quot;&lt;&lt;X&lt;&lt;endl;</span><br><span class="line">	if(L!=0)</span><br><span class="line">		cout&lt;&lt;&quot;L &quot;&lt;&lt;L&lt;&lt;endl;</span><br><span class="line">	if(C!=0)</span><br><span class="line">		cout&lt;&lt;&quot;C &quot;&lt;&lt;C&lt;&lt;endl;</span><br><span class="line">	if(D!=0)</span><br><span class="line">		cout&lt;&lt;&quot;D &quot;&lt;&lt;D&lt;&lt;endl;</span><br><span class="line">	if(M!=0)</span><br><span class="line">		cout&lt;&lt;&quot;M &quot;&lt;&lt;M&lt;&lt;endl;</span><br><span class="line">	return 0;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/18/计蒜客-罗马数字/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -368,7 +370,7 @@ V 2
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-18 17:02:35 / 修改时间：19:31:46" itemprop="dateCreated datePublished" datetime="2020-02-18T17:02:35+08:00">2020-02-18</time>
+              <time title="创建时间：2020-02-18 17:02:35 / 修改时间：21:27:22" itemprop="dateCreated datePublished" datetime="2020-02-18T17:02:35+08:00">2020-02-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -393,26 +395,16 @@ V 2
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h3><p>输入一个自然数N，我们总可以得到一些满足“1≤b≤N,0≤a/b≤1”条件的最简分数a/b（分子和分母互质的分数），请找出所有满足条件的分数。<br>比方说，当N=5时，所有解为：<br>0/1 1/5 1/4 1/3 2/5 1/2 3/5 2/3 3/4 4/5 1/1<br>现在，你需要对于一个给定的自然数N，1≤N≤160，请编程按分数值递增的顺序输出所有解。</p>
-<p>注：0和任意自然数的最大公约数就是那个自然数、互质指最大公约数等于1的两个自然数。</p>
-<p>输入包括一个给个给定的自然数N</p>
-<p>输出为一个列表，每个分数单独占一行，按照实际大小从小到大排列</p>
-<h3 id="样例输入"><a href="#样例输入" class="headerlink" title="样例输入"></a>样例输入</h3><pre><code>5
-</code></pre><h3 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h3><pre><code>0/1
-1/5
-1/4
-1/3
-2/5
-1/2
-3/5
-2/3
-3/4
-4/5
-1/1
-</code></pre><h3 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h3><p>&emsp;&emsp;这是一道在枚举列表中的题目，有点类似暴力破解，b从1到N，然后a满足（分子和分母互质）的条件，将所有可能都枚举出来，接着排序，输出。</p>
-<p>&emsp;&emsp;满足（分子和分母互质）的条件：先枚举出一个b，然后再枚举a，用“辗转相除法”判断a和b是否满足要求，如果满足就放入相对应的数组中。</p>
-<p>&emsp;&emsp;排序：第一次遇到分数排序，没有找到思路，网上找了一些别人的代码，其实和冒泡差不多的思路。</p>
-<h3 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">//https://nanti.jisuanke.com/t/30</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int gcb(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    c=x%y;</span><br><span class="line">    while( c!=0 )</span><br><span class="line">    &#123;</span><br><span class="line">        x=y;</span><br><span class="line">        y=c;</span><br><span class="line">        c=x%y;</span><br><span class="line">    &#125;</span><br><span class="line">    return y;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int N;</span><br><span class="line">    int a[10000]=&#123;0&#125;,b[10000]=&#123;0&#125;;</span><br><span class="line">    int c;</span><br><span class="line">    int i,j;</span><br><span class="line">    int k=0;</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;N);</span><br><span class="line">    for(i=2;i&lt;=N;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        for(j=1;j&lt;=i;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            c=gcb(i,j);</span><br><span class="line">            if(c==1)</span><br><span class="line">            &#123;</span><br><span class="line">                k++;</span><br><span class="line">                a[k]=j;</span><br><span class="line">                b[k]=i;	</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //SORT</span><br><span class="line">    for(i=1;i&lt;=k;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        for(j=i+1;j&lt;=k;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            float c=a[i]*1.0/b[i];</span><br><span class="line">            float d=a[j]*1.0/b[j];</span><br><span class="line">            if(c&gt;d)</span><br><span class="line">            &#123;</span><br><span class="line">                int t;</span><br><span class="line">                t=a[j];</span><br><span class="line">                a[j]=a[i];</span><br><span class="line">                a[i]=t;</span><br><span class="line">                    </span><br><span class="line">                t=b[j];</span><br><span class="line">                b[j]=b[i];</span><br><span class="line">                b[i]=t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;&quot;0/1&quot;&lt;&lt;endl;</span><br><span class="line">    for(i=1;i&lt;=k;i++)</span><br><span class="line">        cout&lt;&lt;a[i]&lt;&lt;&quot;/&quot;&lt;&lt;b[i]&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;&quot;1/1&quot;&lt;&lt;endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h3 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h3><p>输入一个自然数 N，我们总可以得到一些满足“1≤b≤N,0≤a/b≤1”条件的最简分数 a/b（分子和分母互质的分数），请找出所有满足条件的分数。<br>比方说，当 N=5 时，所有解为：<br>0/1 1/5 1/4 1/3 2/5 1/2 3/5 2/3 3/4 4/5 1/1<br>现在，你需要对于一个给定的自然数 N，1≤N≤160，请编程按分数值递增的顺序输出所有解。</p>
+<p>注：0 和任意自然数的最大公约数就是那个自然数、互质指最大公约数等于 1 的两个自然数。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/18/计蒜客-合法分数的组合/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
