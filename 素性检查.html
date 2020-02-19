@@ -46,16 +46,24 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="http://jklf5.xyz/tags/index.html">
+  <meta name="description" content="前言：&amp;emsp;&amp;emsp;自古以来，数学家就被有关素数的问题所吸引">
+<meta name="keywords" content="算法,素数测试,概率算法,Miller-Rabin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="素性检查">
+<meta property="og:url" content="http://jklf5.xyz/素性检查.html">
 <meta property="og:site_name" content="jklf5">
+<meta property="og:description" content="前言：&amp;emsp;&amp;emsp;自古以来，数学家就被有关素数的问题所吸引">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-18T11:58:42.693Z">
+<meta property="og:image" content="http://jklf5.xyz/素性检查.htm/皮亚诺加法.png">
+<meta property="og:image" content="http://jklf5.xyz/素性检查.htm/作为编程中第一元素所需满足的东西.png">
+<meta property="og:image" content="http://jklf5.xyz/素性检查.htm/sqrt.png">
+<meta property="og:updated_time" content="2020-02-19T12:58:30.621Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签">
+<meta name="twitter:title" content="素性检查">
+<meta name="twitter:description" content="前言：&amp;emsp;&amp;emsp;自古以来，数学家就被有关素数的问题所吸引">
+<meta name="twitter:image" content="http://jklf5.xyz/素性检查.htm/皮亚诺加法.png">
 
-<link rel="canonical" href="http://jklf5.xyz/tags/">
+<link rel="canonical" href="http://jklf5.xyz/素性检查">
 
 
 <script id="page-configurations">
@@ -67,7 +75,7 @@
   };
 </script>
 
-  <title>标签 | jklf5
+  <title>素性检查 | jklf5
   </title>
   
 
@@ -191,7 +199,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">标签
+<h1 class="post-title" itemprop="name headline">素性检查
 </h1>
 
 <div class="post-meta">
@@ -205,15 +213,8 @@
       
       
       <div class="post-body">
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-              目前共计 14 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/CRC检测/" style="font-size: 12px; color: #ccc">CRC检测</a> <a href="/tags/CUDA/" style="font-size: 12px; color: #ccc">CUDA</a> <a href="/tags/Django/" style="font-size: 12px; color: #ccc">Django</a> <a href="/tags/SQL-SERVER/" style="font-size: 12px; color: #ccc">SQL SERVER</a> <a href="/tags/Tensorflow/" style="font-size: 12px; color: #ccc">Tensorflow</a> <a href="/tags/Ubuntu/" style="font-size: 12px; color: #ccc">Ubuntu</a> <a href="/tags/Win10/" style="font-size: 12px; color: #ccc">Win10</a> <a href="/tags/cuDNN/" style="font-size: 12px; color: #ccc">cuDNN</a> <a href="/tags/双系统/" style="font-size: 12px; color: #ccc">双系统</a> <a href="/tags/数学/" style="font-size: 12px; color: #ccc">数学</a> <a href="/tags/数据库远程连接/" style="font-size: 12px; color: #ccc">数据库远程连接</a> <a href="/tags/算法/" style="font-size: 30px; color: #111">算法</a> <a href="/tags/计蒜客/" style="font-size: 30px; color: #111">计蒜客</a> <a href="/tags/配置静态文件/" style="font-size: 12px; color: #ccc">配置静态文件</a>
-            </div>
-          </div>
-        
+          <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;自古以来，数学家就被有关素数的问题所吸引<br><a id="more"></a><br><img src="/素性检查.htm/皮亚诺加法.png" alt="1"><br><img src="/素性检查.htm/作为编程中第一元素所需满足的东西.png" alt="3"><br><img src="/素性检查.htm/sqrt.png" alt="2"></p>
+<h3 id="方法一：寻找因子"><a href="#方法一：寻找因子" class="headerlink" title="方法一：寻找因子"></a>方法一：寻找因子</h3><h3 id="方法二：费马检查"><a href="#方法二：费马检查" class="headerlink" title="方法二：费马检查"></a>方法二：费马检查</h3><h3 id="方法三：Miller-Rabin检查"><a href="#方法三：Miller-Rabin检查" class="headerlink" title="方法三：Miller-Rabin检查"></a>方法三：Miller-Rabin检查</h3>
       </div>
       
       
@@ -229,6 +230,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -275,6 +277,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言："><span class="nav-number">1.</span> <span class="nav-text">前言：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：寻找因子"><span class="nav-number">2.</span> <span class="nav-text">方法一：寻找因子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二：费马检查"><span class="nav-number">3.</span> <span class="nav-text">方法二：费马检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法三：Miller-Rabin检查"><span class="nav-number">4.</span> <span class="nav-text">方法三：Miller-Rabin检查</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
