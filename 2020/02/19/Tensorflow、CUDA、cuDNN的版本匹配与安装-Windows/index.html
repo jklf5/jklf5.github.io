@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://jklf5.xyz').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Windows平台我的环境： tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用） 一、首先说一下安装顺序（注意版本一定要匹配，不一定是最新的就能用）  1、安装tensorflow_gpu（注意tensorflow与python版本的匹配） tensorflow的github仓库：">
+<meta name="keywords" content="Tensorflow,CUDA,cuDNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows">
+<meta property="og:url" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/index.html">
+<meta property="og:site_name" content="jklf5">
+<meta property="og:description" content="Windows平台我的环境： tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用） 一、首先说一下安装顺序（注意版本一定要匹配，不一定是最新的就能用）  1、安装tensorflow_gpu（注意tensorflow与python版本的匹配） tensorflow的github仓库：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/2.2.png">
+<meta property="og:image" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/3.png">
+<meta property="og:updated_time" content="2020-02-19T13:00:44.632Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows">
+<meta name="twitter:description" content="Windows平台我的环境： tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用） 一、首先说一下安装顺序（注意版本一定要匹配，不一定是最新的就能用）  1、安装tensorflow_gpu（注意tensorflow与python版本的匹配） tensorflow的github仓库：">
+<meta name="twitter:image" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/2.2.png">
+
+<link rel="canonical" href="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows | jklf5</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54424bab433df3ecd1ec8e39760a6272";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jklf5</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>友情链接</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="jklf5">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jklf5">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-19 13:13:54 / 修改时间：21:00:44" itemprop="dateCreated datePublished" datetime="2020-02-19T13:13:54+08:00">2020-02-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/环境、IDE配置/" itemprop="url" rel="index">
+                    <span itemprop="name">环境、IDE配置</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/" class="post-meta-item leancloud_visitors" data-flag-title="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><u><font size="5">Windows平台</font></u><br>我的环境：</p>
+<pre><code>tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用）
+</code></pre><h3 id="一、首先说一下安装顺序"><a href="#一、首先说一下安装顺序" class="headerlink" title="一、首先说一下安装顺序"></a>一、首先说一下安装顺序</h3><font color="red" size="4">（注意版本一定要匹配，不一定是最新的就能用）</font>
+
+<p>1、安装tensorflow_gpu（注意tensorflow与python版本的匹配）</p>
+<pre><code>tensorflow的github仓库：https://github.com/tensorflow/tensorflow
+</code></pre><p>2、根据tensorflow版本查询CUDA版本，安装CUDA</p>
+<pre><code>CUDA历史版本下载地址：https://developer.nvidia.com/cuda-toolkit-archive
+</code></pre><p>3、根据CUDA版本查询cuDNN版本，安装cuDNN</p>
+<pre><code>cuDNN历史版本下载地址：https://developer.nvidia.com/rdp/cudnn-archive
+</code></pre><p>对应版本查询链接：<a href="https://tensorflow.google.cn/install/source_windows" target="_blank" rel="noopener">https://tensorflow.google.cn/install/source_windows</a><br><a id="more"></a></p>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、通过pip或者conda都可以安装tensorflow-gpu，可能速度比较慢，耐心等待"><a href="#1、通过pip或者conda都可以安装tensorflow-gpu，可能速度比较慢，耐心等待" class="headerlink" title="1、通过pip或者conda都可以安装tensorflow_gpu，可能速度比较慢，耐心等待"></a>1、通过pip或者conda都可以安装tensorflow_gpu，可能速度比较慢，耐心等待</h4><h4 id="2、CUDA下对版本，默认安装就行"><a href="#2、CUDA下对版本，默认安装就行" class="headerlink" title="2、CUDA下对版本，默认安装就行"></a>2、CUDA下对版本，默认安装就行</h4><p>使用nvcc -V显示如下表示安装成功<br><img src="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/2.2.png" alt="2.2"></p>
+<h4 id="3、cuDNN下载时可能需要登录账户"><a href="#3、cuDNN下载时可能需要登录账户" class="headerlink" title="3、cuDNN下载时可能需要登录账户"></a>3、cuDNN下载时可能需要登录账户</h4><p><font color="red">可以通过 “右键复制链接地址” 走捷径</font><br>解压下载到的cuDNN包，得到如下三个文件夹和一个文件<br><img src="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/3.png" alt="3"></p>
+<p>将bin文件夹下的.dll文件复制到CUDA安装目录下的bin文件夹下</p>
+<p>将include文件夹下的.h文件复制到CUDA安装目录下的include文件夹下</p>
+<p>将lib/x64文件夹下的.lib文件复制到CUDA安装目录下的lib/x64文件夹下</p>
+<p>官方参考链接：<a href="https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#installwindows" target="_blank" rel="noopener">https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#installwindows</a></p>
+<h4 id="4、最后测试自己的tensorflow代码吧"><a href="#4、最后测试自己的tensorflow代码吧" class="headerlink" title="4、最后测试自己的tensorflow代码吧"></a>4、最后测试自己的tensorflow代码吧</h4><h3 id="三、注意"><a href="#三、注意" class="headerlink" title="三、注意"></a><font color="red">三、注意</font></h3><p>1、如果python版本不能安装tensorflow，且是从anaconda安装的python，可以通过</p>
+<pre><code>conda install python=版本号
+</code></pre><p>来安装特定版本。<br>官方指导链接：<a href="http://docs.anaconda.com/anaconda/user-guide/faq/#how-do-i-get-the-latest-anaconda-with-python-3-5" target="_blank" rel="noopener">http://docs.anaconda.com/anaconda/user-guide/faq/#how-do-i-get-the-latest-anaconda-with-python-3-5</a></p>
+<p>2、国内conda是连接国外的镜像源，conda有时候会很慢，可以通过改变连接清华镜像源地址解决<br>在C盘中找到 .condarc 文件，修改文件内容为：</p>
+<pre><code>ssl_verify: true
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
+
+show_channel_urls: true
+</code></pre><p>参考链接：<a href="https://blog.csdn.net/qq_32644121/article/details/83507451" target="_blank" rel="noopener">https://blog.csdn.net/qq_32644121/article/details/83507451</a></p>
+<h3 id="四、另一种更方便的方法（使用Conda）"><a href="#四、另一种更方便的方法（使用Conda）" class="headerlink" title="四、另一种更方便的方法（使用Conda）"></a>四、另一种更方便的方法（使用Conda）</h3><p>使用conda安装tensorflow-gpu</p>
+<pre><code>conda install tensorflow-gpu
+</code></pre><p>使用conda安装的好处：<br>使用conda安装的过程中会一起将cuda和cudnn安装上。<br>详见：<a href="https://zhuanlan.zhihu.com/p/46579831" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/46579831</a></p>
+
+    </div>
+
+    
+    
+    
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------ 本文结束------</div>
+    
+</div>
+	  
+	</div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="jklf5 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="jklf5 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <!---->
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/">Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 jklf5 的个人博客">jklf5</a></p>
+  <p><span>发布时间:</span>2020年02月19日 - 13:13</p>
+  <p><span>最后更新:</span>2020年02月19日 - 21:00</p>
+  <p><span>原始链接:</span><a href="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/" title="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows">https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Tensorflow/" rel="tag"># Tensorflow</a>
+              <a href="/tags/CUDA/" rel="tag"># CUDA</a>
+              <a href="/tags/cuDNN/" rel="tag"># cuDNN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/18/模2除法（CRC检验码）/" rel="prev" title="模2除法（CRC检验码）">
+      <i class="fa fa-chevron-left"></i> 模2除法（CRC检验码）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/19/Ubuntu18-04LTS-Win10-GPT-UEFI双系统安装/" rel="next" title="Ubuntu18.04LTS+Win10+GPT+UEFI双系统安装">
+      Ubuntu18.04LTS+Win10+GPT+UEFI双系统安装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、首先说一下安装顺序"><span class="nav-text">一、首先说一下安装顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、安装"><span class="nav-text">二、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、通过pip或者conda都可以安装tensorflow-gpu，可能速度比较慢，耐心等待"><span class="nav-text">1、通过pip或者conda都可以安装tensorflow_gpu，可能速度比较慢，耐心等待</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、CUDA下对版本，默认安装就行"><span class="nav-text">2、CUDA下对版本，默认安装就行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、cuDNN下载时可能需要登录账户"><span class="nav-text">3、cuDNN下载时可能需要登录账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、最后测试自己的tensorflow代码吧"><span class="nav-text">4、最后测试自己的tensorflow代码吧</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、注意"><span class="nav-text">三、注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、另一种更方便的方法（使用Conda）"><span class="nav-text">四、另一种更方便的方法（使用Conda）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="jklf5"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">jklf5</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jklf5" title="GitHub → https://github.com/jklf5" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chenyu101096@gmail.com" title="E-Mail → mailto:chenyu101096@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jklf5</span>
+</div>
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+    &emsp;
+    <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  </span>
+  
+  </div>
+  <br>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='50' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'De9B8aFjWOhsEgwlSlsM06IB-gzGzoHsz',
+      appKey: 'j3uiph6OnSMAvk7ea9xfR9G5',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

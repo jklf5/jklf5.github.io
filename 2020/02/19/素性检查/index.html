@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://jklf5.xyz').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="前言：&amp;emsp;&amp;emsp;自古以来，数学家就被有关素数的问题所吸引，许多人都研究过确定整数是否素数的方法。检测一个数是否素数的一种方法就是找出它的因子；另外还有概率方法。&amp;emsp;&amp;emsp;算法只考虑在实践中的可靠性而不考虑在自然界的真理性表现出数学与工程的不同。这也使得概率方法可以在算法中应用。">
+<meta name="keywords" content="算法,素数测试,概率算法,Miller-Rabin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="素性检查算法">
+<meta property="og:url" content="https://jklf5.xyz/2020/02/19/素性检查/index.html">
+<meta property="og:site_name" content="jklf5">
+<meta property="og:description" content="前言：&amp;emsp;&amp;emsp;自古以来，数学家就被有关素数的问题所吸引，许多人都研究过确定整数是否素数的方法。检测一个数是否素数的一种方法就是找出它的因子；另外还有概率方法。&amp;emsp;&amp;emsp;算法只考虑在实践中的可靠性而不考虑在自然界的真理性表现出数学与工程的不同。这也使得概率方法可以在算法中应用。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-02-20T12:10:57.769Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="素性检查算法">
+<meta name="twitter:description" content="前言：&amp;emsp;&amp;emsp;自古以来，数学家就被有关素数的问题所吸引，许多人都研究过确定整数是否素数的方法。检测一个数是否素数的一种方法就是找出它的因子；另外还有概率方法。&amp;emsp;&amp;emsp;算法只考虑在实践中的可靠性而不考虑在自然界的真理性表现出数学与工程的不同。这也使得概率方法可以在算法中应用。">
+
+<link rel="canonical" href="https://jklf5.xyz/2020/02/19/素性检查/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>素性检查算法 | jklf5</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54424bab433df3ecd1ec8e39760a6272";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jklf5</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>友情链接</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2020/02/19/素性检查/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="jklf5">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jklf5">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          素性检查算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-19 14:49:30" itemprop="dateCreated datePublished" datetime="2020-02-19T14:49:30+08:00">2020-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-20 20:10:57" itemprop="dateModified" datetime="2020-02-20T20:10:57+08:00">2020-02-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/02/19/素性检查/" class="post-meta-item leancloud_visitors" data-flag-title="素性检查算法" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/19/素性检查/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/19/素性检查/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>&emsp;&emsp;自古以来，数学家就被有关素数的问题所吸引，许多人都研究过确定整数是否素数的方法。检测一个数是否素数的一种方法就是找出它的因子；另外还有概率方法。<br>&emsp;&emsp;算法只考虑在实践中的可靠性而不考虑在自然界的真理性表现出数学与工程的不同。这也使得概率方法可以在算法中应用。<br><a id="more"></a></p>
+<h3 id="方法一：寻找因子"><a href="#方法一：寻找因子" class="headerlink" title="方法一：寻找因子"></a>方法一：寻找因子</h3><p>采用一种直接方法，用从2开始的连续整数去检查它们能否整除n。</p>
+<p>scheme代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">; 用从2开始的连续整数去检查它们能否整除n</span><br><span class="line">(define (smallest-divisor n)</span><br><span class="line">    (find-divisor n 2))</span><br><span class="line">; 如果n不是素数，它必然有一个小于或者等于sqrt n的因子，所以只要在1和sqrt n之间检查因子就可以了，所以时间复杂度是sqrt n</span><br><span class="line">; find-divisor过程可以找出当n不是素数时,n的最小因子</span><br><span class="line">(define (find-divisor n test-divisor)</span><br><span class="line">    (cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">        ((divides? test-divisor n) test-divisor)</span><br><span class="line">        (else (find-divisor n (+ test-divisor 1)))))</span><br><span class="line">; 检查a是否是b的因子</span><br><span class="line">(define (divides? a b)</span><br><span class="line">    (= (remainder b a) 0))</span><br><span class="line">; 检查n是否是素数，n是素数当且仅当它是自己的最小因子</span><br><span class="line">(define (prime? n)</span><br><span class="line">    (= n (smallest-divisor n)))</span><br></pre></td></tr></table></figure></p>
+<p>find-divisor的结束判断基于如下事实，如果n不是素数，它必然有一个小于或者等于$\sqrt{n}$的因子。（如果d是n的因子，那么n/d当然也是，而n/d绝不会都大于$\sqrt{n}$）这也意味着该算法在1和$\sqrt{n}$之间检查因子。由此可知，确定是否素数所需的步数将具有$\Theta(\sqrt{n}$)的增长阶。</p>
+<h3 id="方法二：费马检查（概率算法）"><a href="#方法二：费马检查（概率算法）" class="headerlink" title="方法二：费马检查（概率算法）"></a>方法二：费马检查（概率算法）</h3><ul>
+<li>费马小定理：<br>如果n是一个素数，a是小于n的任意正整数，那么a的n次方与a模n同余。如果n不是素数，那么，一般而言，大部分的a$&lt;$n都不满足上面的关系。</li>
+</ul>
+<p>这就引出了<strong>费马检查</strong>算法：对于给定的整数n，随机任取一个a$&lt;$n饼计算出$a^n$取模n的余数。如果得到的结果不等于a，那么n就肯定不是素数。如果它就是a，那么n是素数的机会就很大。通过检查越来越多的a值，我们就可以不断增加对有关结果的信心。<br>费马检查的时间复杂度为$\Theta(\log{n}$)</p>
+<p>scheme代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">; 计算一个base^exp%m，该过程类似fast-expt，采用连续求平方的方式</span><br><span class="line">(define (expmod base exp m)</span><br><span class="line">    (cond ((= exp 0) 1)</span><br><span class="line">        ((even? exp) (remainder (square (expmod base (/ exp 2) m))</span><br><span class="line">                                m))</span><br><span class="line">        (else (remainder (* base (expmod base (- exp 1) m))</span><br><span class="line">                        m))))</span><br><span class="line">; n是需要检查的数，a是小于n的任意正整数，如果a^n%n=a，那么n是素数的可能性就很大。从1到(n-1)之间随机取一个数a来进行检测。</span><br><span class="line">(define (fermat-test n)</span><br><span class="line">    (define (try-it a)</span><br><span class="line">        (= (expmod a n n) a))</span><br><span class="line">    (try-it (+ 1 (random (- n 1)))))</span><br><span class="line">; 按times次对n进行检测，如果每次检测都成功，那么n就是一个素数</span><br><span class="line">(define (fast-prime? n times)</span><br><span class="line">    (cond ((= times 0) true)</span><br><span class="line">        ((fermat-test n) (fast-prime? n (- times 1)))</span><br><span class="line">    (else false)))</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>概率方法：<br>费马检查其实是一个概率方法，因为能通过费马检查的n只表示他有很大概率是素数，但不能保证就是素数。<br>存在着一种数为<font color="red">$Carmichael$</font>的数，也同样符合费马检查，但是却不是素数，这样的数在100000000之内有255个，但是如果在计算机求解的过程中，要碰上$Carmichael$数，其概率比宇宙射线导致计算机在执行“正确”算法中出错的机会还有小。<br>另一方面，如果n对于某个随机选出的a能通过检查，n是素数的机会就大于一半。如果n对于两个随机选择的a能通过检查，n是素数的机会就大于四分之三。<br>因此，通过用更多随机选择的a值运行这一检查，我们就可以使出现错误的概率减小到所需要的任意程度。<br>这其实是概率算法的领域。概率素数检查在密码学中有着很重要的应用。虽然完成200位数的因数分解现在在计算机上还是不太容易实现的，但是费马检查可以在几秒钟内判断这么大数的素性。</li>
+</ul>
+<h3 id="方法三：Miller-Rabin检查（概率算法）"><a href="#方法三：Miller-Rabin检查（概率算法）" class="headerlink" title="方法三：Miller-Rabin检查（概率算法）"></a>方法三：Miller-Rabin检查（概率算法）</h3><ul>
+<li>$Miller-Rabin$检查：<br>$Miller-Rabin$检查是在费马检查的基础上改进的，它也可以避开$Carmichael$数。<br>其原理是如果n是素数，a$&lt;$n，则$a^{n-1}\%n=1$，同时也要检查是否会遇到“1取模n的非平凡平方根”<br>如果n是非素数的奇数，那么，至少有<font color="red">一半</font>的数a$&lt;$n,按照这种方式计算$a^{n-1}$，将会遇到1取模n的非平凡平方根，所以，在检查的时候，需要检查$n/2$次<br>$Miller-Rabin$检查也是一个概率算法<br>$Miller-Rabin$检查的时间复杂度为$\Theta(\log{n}$)</li>
+</ul>
+<p>scheme代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">; 非平凡平方根检查。存在a不等于1或者不等于n-1，其平方取模n等于1时，n就不是素数</span><br><span class="line">(define (Nontrivial-square-root? a n)</span><br><span class="line">    (and (not (= a 1))</span><br><span class="line">        (not (= a (- n 1)))</span><br><span class="line">        (= (remainder (square a) n) 1)))</span><br><span class="line">; 计算base^exp % m，同时加入非平凡平方根检查</span><br><span class="line">(define (expmod base exp m)</span><br><span class="line">    (cond ((= exp 0) 1)</span><br><span class="line">        ((Nontrivial-square-root? base m) 0)</span><br><span class="line">        ((even? exp) (remainder (square (expmod base (/ exp 2) m))</span><br><span class="line">                                m))</span><br><span class="line">        (else (remainder (* base (expmod base (- exp 1) m))</span><br><span class="line">                        m))))</span><br><span class="line">; 用miller-rabin的方法检查n</span><br><span class="line">(define (miller-rabin-test n)</span><br><span class="line">    (define (try-it a)</span><br><span class="line">        (= (expmod a (- n 1) n) 1))</span><br><span class="line">    (try-it (+ 1 (random (- n 1)))))</span><br><span class="line">; 检查n是否是prime</span><br><span class="line">(define (check-prime n times)</span><br><span class="line">    (cond ((= times 0) #t)</span><br><span class="line">            ((miller-rabin-test n) (check-prime n (- times 1)))</span><br><span class="line">            (else #f)))</span><br><span class="line">; 执行n/2次检查如果都通过，就可以保证结果的准确性。</span><br><span class="line">(define (fast-prime? n)</span><br><span class="line">    (if (= n 1)</span><br><span class="line">        #t</span><br><span class="line">        (let ((times (ceiling (/ n 2))))</span><br><span class="line">            (check-prime n times))))</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------ 本文结束------</div>
+    
+</div>
+	  
+	</div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="jklf5 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="jklf5 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <!---->
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2020/02/19/素性检查/">素性检查算法</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 jklf5 的个人博客">jklf5</a></p>
+  <p><span>发布时间:</span>2020年02月19日 - 14:49</p>
+  <p><span>最后更新:</span>2020年02月20日 - 20:10</p>
+  <p><span>原始链接:</span><a href="/2020/02/19/素性检查/" title="素性检查算法">https://jklf5.xyz/2020/02/19/素性检查/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://jklf5.xyz/2020/02/19/素性检查/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/算法/" rel="tag"># 算法</a>
+              <a href="/tags/素数测试/" rel="tag"># 素数测试</a>
+              <a href="/tags/概率算法/" rel="tag"># 概率算法</a>
+              <a href="/tags/Miller-Rabin/" rel="tag"># Miller-Rabin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/19/Ubuntu18-04LTS-Win10-GPT-UEFI双系统安装/" rel="prev" title="Ubuntu18.04LTS+Win10+GPT+UEFI双系统安装">
+      <i class="fa fa-chevron-left"></i> Ubuntu18.04LTS+Win10+GPT+UEFI双系统安装
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/03/Python工具-You-Get视频下载/" rel="next" title="[Python工具] You-Get视频下载">
+      [Python工具] You-Get视频下载 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言："><span class="nav-text">前言：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：寻找因子"><span class="nav-text">方法一：寻找因子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二：费马检查（概率算法）"><span class="nav-text">方法二：费马检查（概率算法）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法三：Miller-Rabin检查（概率算法）"><span class="nav-text">方法三：Miller-Rabin检查（概率算法）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="jklf5"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">jklf5</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jklf5" title="GitHub → https://github.com/jklf5" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chenyu101096@gmail.com" title="E-Mail → mailto:chenyu101096@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jklf5</span>
+</div>
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+    &emsp;
+    <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  </span>
+  
+  </div>
+  <br>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='50' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'De9B8aFjWOhsEgwlSlsM06IB-gzGzoHsz',
+      appKey: 'j3uiph6OnSMAvk7ea9xfR9G5',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
