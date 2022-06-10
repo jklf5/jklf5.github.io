@@ -190,6 +190,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2022/06/10/Linux系统下解封DenyHost中的IP地址/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="jklf5">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jklf5">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/10/Linux系统下解封DenyHost中的IP地址/" class="post-title-link" itemprop="url">Linux系统下解封DenyHost中的IP地址</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-10 20:01:07 / 修改时间：22:45:47" itemprop="dateCreated datePublished" datetime="2022-06-10T20:01:07+08:00">2022-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/环境、IDE配置/" itemprop="url" rel="index">
+                    <span itemprop="name">环境、IDE配置</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/06/10/Linux系统下解封DenyHost中的IP地址/" class="post-meta-item leancloud_visitors" data-flag-title="Linux系统下解封DenyHost中的IP地址" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/06/10/Linux系统下解封DenyHost中的IP地址/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/10/Linux系统下解封DenyHost中的IP地址/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>在使用SSH连接过程中，突然出现连接不成功（以前都可以连接，但突然不能连接了），并且出现如下提示：<br><code>ssh_exchange_identification: read: Connection reset</code><br>或者<br><code>ssh: connect to host port 22: Connection refused</code></p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>需要考虑是否<strong>因为密码输入错误的次数过多</strong>，导致Linux系统<strong>禁止</strong>了你的IP地址访问。<br>可以查看<code>/etc/hosts.deny</code>文件中是否出现了你的IP地址。</p>
+<p>如果的却是Linux系统禁止了你的IP地址访问，<strong>仅仅在<code>/etc/hosts.deny</code>中删除IP是没有用的</strong>，也需要在<code>/var/lib/denyhosts</code>目录下的如下文件中进一步删除被禁IP。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/denyhosts/hosts </span><br><span class="line">/var/lib/denyhosts/hosts-restricted </span><br><span class="line">/var/lib/denyhosts/hosts-root </span><br><span class="line">/var/lib/denyhosts/hosts-valid </span><br><span class="line">/var/lib/denyhosts/users-hosts </span><br><span class="line">/var/lib/denyhosts/users-invalid </span><br><span class="line">/var/lib/denyhosts/users-valid</span><br></pre></td></tr></table></figure></p>
+<p>可以通过如下命令删除文件中的被禁IP地址<br><code>sed -i &quot;/IP地址/d&quot; /文件</code></p>
+<p>通过运行<a href="#Shell脚本">Shell脚本</a>以删除所有文件中的被禁IP，然后通过如下命令检查<code>iptables</code><br><code>iptables -nvL | grep [IP地址]</code></p>
+<h3 id="Shell脚本"><a href="#Shell脚本" class="headerlink" title="Shell脚本"></a>Shell脚本</h3><p>新建一个名为<code>unblock_ip.sh</code>的Shell脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">function unblock_ip() &#123;</span><br><span class="line">    # 参数1：ip地址</span><br><span class="line">    # 定义需要处理的文件的数组</span><br><span class="line">    declare -a filesList=(</span><br><span class="line">        &quot;/etc/hosts.deny&quot;</span><br><span class="line">        &quot;/var/lib/denyhosts/hosts&quot; </span><br><span class="line">        &quot;/var/lib/denyhosts/hosts-restricted&quot; </span><br><span class="line">        &quot;/var/lib/denyhosts/hosts-root&quot; </span><br><span class="line">        &quot;/var/lib/denyhosts/hosts-valid&quot; </span><br><span class="line">        &quot;/var/lib/denyhosts/users-hosts&quot; </span><br><span class="line">        &quot;/var/lib/denyhosts/users-invalid&quot; </span><br><span class="line">        &quot;/var/lib/denyhosts/users-valid&quot;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    # 停止DenyHosts服务</span><br><span class="line">    echo &quot;DenyHosts Service Stop&quot;</span><br><span class="line">    service denyhosts stop</span><br><span class="line"></span><br><span class="line">    # 清理iptables的规则 (应先用 iptables --list 查看一下已有规则)</span><br><span class="line">    iptables -F</span><br><span class="line"></span><br><span class="line">    # 清理每个文件中的 ip 地址</span><br><span class="line">    for i in $&#123;!filesList[*]&#125;; </span><br><span class="line">    do</span><br><span class="line">        echo &quot;----------------------------------------------------&quot;;</span><br><span class="line">        echo &quot;UNBLOCK IP: $OPTARG in $&#123;filesList[$i]&#125;&quot;;</span><br><span class="line">        # echo &quot;/$OPTARG/d&quot;</span><br><span class="line">        sed -i &quot;/$OPTARG/d&quot; $&#123;filesList[$i]&#125;</span><br><span class="line">        echo &quot;UNBLOCK SUCCESS IN $&#123;filesList[$i]&#125;&quot;;</span><br><span class="line">    </span><br><span class="line">    done</span><br><span class="line"></span><br><span class="line">    # iptables -D INPUT -s $OPTARG -j DROP</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # 启动DenyHosts服务</span><br><span class="line">    echo &quot;DenyHosts Service Start&quot;</span><br><span class="line">    service denyhosts start</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 通过 getopts 获取需要处理的 ip 地址参数</span><br><span class="line">getopts &quot;i:&quot; ip</span><br><span class="line">if [ -n &quot;$OPTARG&quot; ];then</span><br><span class="line">    if [[ $OPTARG =~ ^[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;$ ]];then</span><br><span class="line">        echo &quot;Need To Block IP: $OPTARG&quot;</span><br><span class="line">        unblock_ip $OPTARG</span><br><span class="line">    else</span><br><span class="line">        echo &quot;IP is not valid&quot;</span><br><span class="line">    fi</span><br><span class="line">else</span><br><span class="line">    echo &quot;IP is empty&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></p>
+<p>在Linux系统中运行如下命令<br><code>sudo bash unblock_ip.sh -i [IP地址]</code></p>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>一些常用命令</p>
+<blockquote>
+<pre><code>查看 iptalbes 的规则
+    iptables --list
+查看 ssh 状态
+    service ssh status
+重启 ssh
+    service ssh restart
+/etc/host.allow 和 /etc/hosts.deny 存储允许和禁止的ip。
+</code></pre></blockquote>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://events.jianshu.io/p/b4124b012e75" title="参考1" target="_blank" rel="noopener">参考1</a><br><a href="https://blog.csdn.net/weixin_43103300/article/details/100127601" title="参考2" target="_blank" rel="noopener">参考2</a></p>
+
+      
+    </div>
+
+    
+    
+    
+	<div>
+	  
+	</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2020/03/03/Python工具-You-Get视频下载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1217,20 +1328,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1267,7 +1378,7 @@
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
