@@ -190,6 +190,137 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="jklf5">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jklf5">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/" class="post-title-link" itemprop="url">Ubuntu中使用Netplan实现双网卡分别连接内外网</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-21 16:22:47 / 修改时间：17:46:48" itemprop="dateCreated datePublished" datetime="2022-06-21T16:22:47+08:00">2022-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/环境、IDE配置/" itemprop="url" rel="index">
+                    <span itemprop="name">环境、IDE配置</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/" class="post-meta-item leancloud_visitors" data-flag-title="Ubuntu中使用Netplan实现双网卡分别连接内外网" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="问题描述及背景"><a href="#问题描述及背景" class="headerlink" title="问题描述及背景"></a>问题描述及背景</h3><p>使用服务器的时候，希望可以使用两张网卡分别连接内外网。<br>本文中将主要介绍使用<code>Netplan</code>的方法配置两张内外网网卡，以及设置路由。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>首先使用<code>ip a</code>查看网络状态。以确定连接内网的网卡和连接外网的网卡。<br>此处，连接内网的网卡是<code>enp3s0</code>，连接外网的网卡是<code>enp7s0</code>。</p>
+<p>然后配置<code>Netplan</code></p>
+<ul>
+<li><p>打开<code>Netplan</code>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/netplan/*.yaml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加配置信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># Let NetworkManager manage all devices on this system</span><br><span class="line"></span><br><span class="line">network:</span><br><span class="line">  version: 2</span><br><span class="line">#  renderer: NetworkManager  # 注释1</span><br><span class="line">  ethernets:</span><br><span class="line">    enp7s0:</span><br><span class="line">      dhcp4: true</span><br><span class="line">      optional: true</span><br><span class="line">      dhcp4-overrides:</span><br><span class="line">        route-metric: 2</span><br><span class="line">    enp3s0:</span><br><span class="line">      dhcp4: false</span><br><span class="line">      addresses:</span><br><span class="line">        - x.x.x.x/x</span><br><span class="line">#      gateway4: x.x.x.x  # 注释2</span><br><span class="line">      nameservers:</span><br><span class="line">        addresses: [x.x.x.x]</span><br><span class="line">      routes:</span><br><span class="line">        - to: x.x.x.x/x</span><br><span class="line">        via: x.x.x.x</span><br><span class="line">        metric: 36</span><br><span class="line">      optional: true</span><br></pre></td></tr></table></figure>
+<p>通过设置<code>metric</code>可以控制路由的优先级。<code>metric</code>数值越小，优先级越高，数值越大，优先级越低。</p>
+<ul>
+<li>注释1、<code>renderer</code>需要注释掉。否则有些设置不会生效，比如设置的<code>metric</code>。</li>
+<li>注释2、内网网卡的网关不需要设置，如果设置了，每次重启会出现内网网卡通向0.0.0.0/0的默认路由，导致上不了网。</li>
+</ul>
+</li>
+<li><p>启用<code>Netplan</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo netplan apply</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查路由，以及用<code>ping</code>命令查看是否内外网都正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route -n</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>配置成功后，就可以同时使用内外网了。也可以把机器作为跳转机，从外网连接，跳转去内网。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><h5 id="也尝试过其他方法来实现。大概流程是"><a href="#也尝试过其他方法来实现。大概流程是" class="headerlink" title="也尝试过其他方法来实现。大概流程是"></a>也尝试过其他方法来实现。大概流程是</h5><ul>
+<li><p>在<code>/etc/network/interfaces</code>文件中设置内网网卡的静态IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto enp3s0</span><br><span class="line">iface enp3s0 inet static</span><br><span class="line">address 10.3.125.92</span><br><span class="line">netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
+<p>本人的尝试中发现，并不能在<code>/etc/network/interfaces</code>文件中同时设置双网卡的IP。（可能会报错，参考：<a href="https://blog.csdn.net/w294954902/article/details/82628909" title="Restarting networking" target="_blank" rel="noopener">Restarting networking</a>）</p>
+</li>
+<li><p>重启网络服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/networking restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加路由<br>可以使用<code>route add</code>命令，或者<code>ip route add</code>命令。比如，<code>route del -net 0.0.0.0 dev enp3s0</code>，<code>ip route del default via 192.168.1.1 dev enp7s0</code>，<code>ip route add 0.0.0.0/0 via 192.168.1.1 dev enp7s0 metric 2</code><br>具体可以参考：<a href="https://blog.csdn.net/qq_34595352/article/details/82218515" title="Linux中添加路由" target="_blank" rel="noopener">Linux中添加路由</a>，<a href="https://blog.csdn.net/dajiangqingzhou/article/details/82901666" title="Ubuntu设置双网卡路由" target="_blank" rel="noopener">使用route命令设置双网卡路由</a></p>
+</li>
+<li>但是设置过了路由，系统重启，路由就会被重置，所以需要在系统启动时自动执行添加路由的命令。<br>在<code>/etc/rc.local</code>文件中写好配置。可以参考<a href="https://blog.csdn.net/weixin_41534481/article/details/107892325" title="开机自动启动命令" target="_blank" rel="noopener">开机自动启动命令</a>以及<a href="https://blog.csdn.net/qq_45700350/article/details/117062720" title="设置rc.local" target="_blank" rel="noopener">设置rc.local</a>。</li>
+</ul>
+<p>由于过程繁琐，不像<code>Netplan</code>一样可以一步到位的设置。所以最终选择了<code>Netplan</code></p>
+<h5 id="在配置过程中，可能会把网卡弄崩掉。"><a href="#在配置过程中，可能会把网卡弄崩掉。" class="headerlink" title="在配置过程中，可能会把网卡弄崩掉。"></a>在配置过程中，可能会把网卡弄崩掉。</h5><p>可以使用<code>sudo service network-manager restart</code>以及<br><code>sudo /etc/init.d/networking restart</code>命令从头开始。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/hu19921016/article/details/80241325" title="双网卡系统重启时出现默认路由" target="_blank" rel="noopener">双网卡系统重启时出现默认路由</a><br><a href="https://blog.csdn.net/ymz641/article/details/117822232" title="Netplan网络配置工具学习" target="_blank" rel="noopener">Netplan网络配置工具学习</a><br><a href="https://blog.csdn.net/weixin_44444810/article/details/124768090" title="网络优先级设置" target="_blank" rel="noopener">网络优先级设置</a><br><a href="https://blog.csdn.net/weixin_44129085/article/details/109121911" title="双网卡配置优先级" target="_blank" rel="noopener">双网卡配置优先级</a><br><a href="https://blog.csdn.net/weixin_34194379/article/details/92726037" title="Netplan配置双网卡、双路由" target="_blank" rel="noopener">Netplan配置双网卡、双路由</a><br><a href="https://blog.csdn.net/xiaoliang199109/article/details/116376630" title="netplan 配置多网卡、多路由、多ip、bonding" target="_blank" rel="noopener">Netplan 配置多网卡、多路由、多ip、bonding</a><br><a href="https://www.yisu.com/ask/3153.html" title="查看网关" target="_blank" rel="noopener">查看网关</a><br><a href="https://blog.csdn.net/qq_26230847/article/details/119962894" title="查看DNS" target="_blank" rel="noopener">查看DNS</a><br><a href="https://blog.csdn.net/u013066730/article/details/122360169" title="查看网络流量" target="_blank" rel="noopener">查看网络流量</a><br><a href="http://t.zoukankan.com/GaZeon-p-5327506.html" title="重启网卡" target="_blank" rel="noopener">重启网卡</a></p>
+
+      
+    </div>
+
+    
+    
+    
+	<div>
+	  
+	</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2022/06/10/Linux系统下解封DenyHost中的IP地址/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1158,117 +1289,12 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2020/02/18/计蒜客-合法分数的组合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="jklf5">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jklf5">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/18/计蒜客-合法分数的组合/" class="post-title-link" itemprop="url">计蒜客 合法分数的组合</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-18 17:02:35" itemprop="dateCreated datePublished" datetime="2020-02-18T17:02:35+08:00">2020-02-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-19 21:00:07" itemprop="dateModified" datetime="2020-02-19T21:00:07+08:00">2020-02-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/02/18/计蒜客-合法分数的组合/" class="post-meta-item leancloud_visitors" data-flag-title="计蒜客 合法分数的组合" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/02/18/计蒜客-合法分数的组合/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/18/计蒜客-合法分数的组合/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h3><p>输入一个自然数 N，我们总可以得到一些满足“1≤b≤N,0≤a/b≤1”条件的最简分数 a/b（分子和分母互质的分数），请找出所有满足条件的分数。<br>比方说，当 N=5 时，所有解为：<br>0/1 1/5 1/4 1/3 2/5 1/2 3/5 2/3 3/4 4/5 1/1<br>现在，你需要对于一个给定的自然数 N，1≤N≤160，请编程按分数值递增的顺序输出所有解。</p>
-<p>注：0 和任意自然数的最大公约数就是那个自然数、互质指最大公约数等于 1 的两个自然数。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/18/计蒜客-合法分数的组合/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-	<div>
-	  
-	</div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1334,7 +1360,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1347,7 +1373,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

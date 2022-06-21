@@ -46,23 +46,20 @@
   };
 </script>
 
-  <meta name="description" content="Windows平台我的环境： tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用） 一、首先说一下安装顺序（注意版本一定要匹配，不一定是最新的就能用）  1、安装tensorflow_gpu（注意tensorflow与python版本的匹配） tensorflow的github仓库：">
-<meta name="keywords" content="Tensorflow,CUDA,cuDNN">
+  <meta name="description" content="问题描述及背景使用服务器的时候，希望可以使用两张网卡分别连接内外网。本文中将主要介绍使用Netplan的方法配置两张内外网网卡，以及设置路由。 解决办法首先使用ip a查看网络状态。以确定连接内网的网卡和连接外网的网卡。此处，连接内网的网卡是enp3s0，连接外网的网卡是enp7s0。 然后配置Netplan  打开Netplan配置文件 1sudo nano /etc/netplan/*.yam">
+<meta name="keywords" content="Ubuntu,Netplan,Network,双网卡,内外网">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows">
-<meta property="og:url" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/index.html">
+<meta property="og:title" content="Ubuntu中使用Netplan实现双网卡分别连接内外网">
+<meta property="og:url" content="https://jklf5.xyz/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/index.html">
 <meta property="og:site_name" content="jklf5">
-<meta property="og:description" content="Windows平台我的环境： tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用） 一、首先说一下安装顺序（注意版本一定要匹配，不一定是最新的就能用）  1、安装tensorflow_gpu（注意tensorflow与python版本的匹配） tensorflow的github仓库：">
+<meta property="og:description" content="问题描述及背景使用服务器的时候，希望可以使用两张网卡分别连接内外网。本文中将主要介绍使用Netplan的方法配置两张内外网网卡，以及设置路由。 解决办法首先使用ip a查看网络状态。以确定连接内网的网卡和连接外网的网卡。此处，连接内网的网卡是enp3s0，连接外网的网卡是enp7s0。 然后配置Netplan  打开Netplan配置文件 1sudo nano /etc/netplan/*.yam">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/2.2.png">
-<meta property="og:image" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/3.png">
-<meta property="og:updated_time" content="2020-02-19T13:00:44.632Z">
+<meta property="og:updated_time" content="2022-06-21T09:46:48.137Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows">
-<meta name="twitter:description" content="Windows平台我的环境： tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用） 一、首先说一下安装顺序（注意版本一定要匹配，不一定是最新的就能用）  1、安装tensorflow_gpu（注意tensorflow与python版本的匹配） tensorflow的github仓库：">
-<meta name="twitter:image" content="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/2.2.png">
+<meta name="twitter:title" content="Ubuntu中使用Netplan实现双网卡分别连接内外网">
+<meta name="twitter:description" content="问题描述及背景使用服务器的时候，希望可以使用两张网卡分别连接内外网。本文中将主要介绍使用Netplan的方法配置两张内外网网卡，以及设置路由。 解决办法首先使用ip a查看网络状态。以确定连接内网的网卡和连接外网的网卡。此处，连接内网的网卡是enp3s0，连接外网的网卡是enp7s0。 然后配置Netplan  打开Netplan配置文件 1sudo nano /etc/netplan/*.yam">
 
-<link rel="canonical" href="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/">
+<link rel="canonical" href="https://jklf5.xyz/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/">
 
 
 <script id="page-configurations">
@@ -74,7 +71,7 @@
   };
 </script>
 
-  <title>Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows | jklf5</title>
+  <title>Ubuntu中使用Netplan实现双网卡分别连接内外网 | jklf5</title>
   
 
 
@@ -198,7 +195,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/">
+    <link itemprop="mainEntityOfPage" href="https://jklf5.xyz/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -211,7 +208,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows
+          Ubuntu中使用Netplan实现双网卡分别连接内外网
         </h1>
 
         <div class="post-meta">
@@ -222,7 +219,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-19 13:13:54 / 修改时间：21:00:44" itemprop="dateCreated datePublished" datetime="2020-02-19T13:13:54+08:00">2020-02-19</time>
+              <time title="创建时间：2022-06-21 16:22:47 / 修改时间：17:46:48" itemprop="dateCreated datePublished" datetime="2022-06-21T16:22:47+08:00">2022-06-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -237,7 +234,7 @@
             </span>
 
           
-            <span id="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/" class="post-meta-item leancloud_visitors" data-flag-title="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows" title="阅读次数">
+            <span id="/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/" class="post-meta-item leancloud_visitors" data-flag-title="Ubuntu中使用Netplan实现双网卡分别连接内外网" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -252,8 +249,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/21/Ubuntu中使用Netplan实现双网卡分别连接内外网/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -268,38 +265,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><u><font size="5">Windows平台</font></u><br>我的环境：</p>
-<pre><code>tensorflow_gpu 1.9.0 + CUDA 9.0 + cuDNN 7.4.1（建议安装tensorflow_gpu 1.9.0，高版本的可能无法很好使用）
-</code></pre><h3 id="一、首先说一下安装顺序"><a href="#一、首先说一下安装顺序" class="headerlink" title="一、首先说一下安装顺序"></a>一、首先说一下安装顺序</h3><font color="red" size="4">（注意版本一定要匹配，不一定是最新的就能用）</font>
-
-<p>1、安装tensorflow_gpu（注意tensorflow与python版本的匹配）</p>
-<pre><code>tensorflow的github仓库：https://github.com/tensorflow/tensorflow
-</code></pre><p>2、根据tensorflow版本查询CUDA版本，安装CUDA</p>
-<pre><code>CUDA历史版本下载地址：https://developer.nvidia.com/cuda-toolkit-archive
-</code></pre><p>3、根据CUDA版本查询cuDNN版本，安装cuDNN</p>
-<pre><code>cuDNN历史版本下载地址：https://developer.nvidia.com/rdp/cudnn-archive
-</code></pre><p>对应版本查询链接：<a href="https://tensorflow.google.cn/install/source_windows" target="_blank" rel="noopener">https://tensorflow.google.cn/install/source_windows</a><br><a id="more"></a></p>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、通过pip或者conda都可以安装tensorflow-gpu，可能速度比较慢，耐心等待"><a href="#1、通过pip或者conda都可以安装tensorflow-gpu，可能速度比较慢，耐心等待" class="headerlink" title="1、通过pip或者conda都可以安装tensorflow_gpu，可能速度比较慢，耐心等待"></a>1、通过pip或者conda都可以安装tensorflow_gpu，可能速度比较慢，耐心等待</h4><h4 id="2、CUDA下对版本，默认安装就行"><a href="#2、CUDA下对版本，默认安装就行" class="headerlink" title="2、CUDA下对版本，默认安装就行"></a>2、CUDA下对版本，默认安装就行</h4><p>使用nvcc -V显示如下表示安装成功<br><img src="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/2.2.png" alt="2.2"></p>
-<h4 id="3、cuDNN下载时可能需要登录账户"><a href="#3、cuDNN下载时可能需要登录账户" class="headerlink" title="3、cuDNN下载时可能需要登录账户"></a>3、cuDNN下载时可能需要登录账户</h4><p><font color="red">可以通过 “右键复制链接地址” 走捷径</font><br>解压下载到的cuDNN包，得到如下三个文件夹和一个文件<br><img src="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/3.png" alt="3"></p>
-<p>将bin文件夹下的.dll文件复制到CUDA安装目录下的bin文件夹下</p>
-<p>将include文件夹下的.h文件复制到CUDA安装目录下的include文件夹下</p>
-<p>将lib/x64文件夹下的.lib文件复制到CUDA安装目录下的lib/x64文件夹下</p>
-<p>官方参考链接：<a href="https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#installwindows" target="_blank" rel="noopener">https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#installwindows</a></p>
-<h4 id="4、最后测试自己的tensorflow代码吧"><a href="#4、最后测试自己的tensorflow代码吧" class="headerlink" title="4、最后测试自己的tensorflow代码吧"></a>4、最后测试自己的tensorflow代码吧</h4><h3 id="三、注意"><a href="#三、注意" class="headerlink" title="三、注意"></a><font color="red">三、注意</font></h3><p>1、如果python版本不能安装tensorflow，且是从anaconda安装的python，可以通过</p>
-<pre><code>conda install python=版本号
-</code></pre><p>来安装特定版本。<br>官方指导链接：<a href="http://docs.anaconda.com/anaconda/user-guide/faq/#how-do-i-get-the-latest-anaconda-with-python-3-5" target="_blank" rel="noopener">http://docs.anaconda.com/anaconda/user-guide/faq/#how-do-i-get-the-latest-anaconda-with-python-3-5</a></p>
-<p>2、国内conda是连接国外的镜像源，conda有时候会很慢，可以通过改变连接清华镜像源地址解决<br>在C盘中找到 .condarc 文件，修改文件内容为：</p>
-<pre><code>ssl_verify: true
-channels:
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
-
-show_channel_urls: true
-</code></pre><p>参考链接：<a href="https://blog.csdn.net/qq_32644121/article/details/83507451" target="_blank" rel="noopener">https://blog.csdn.net/qq_32644121/article/details/83507451</a></p>
-<h3 id="四、另一种更方便的方法（使用Conda）"><a href="#四、另一种更方便的方法（使用Conda）" class="headerlink" title="四、另一种更方便的方法（使用Conda）"></a>四、另一种更方便的方法（使用Conda）</h3><p>使用conda安装tensorflow-gpu</p>
-<pre><code>conda install tensorflow-gpu
-</code></pre><p>使用conda安装的好处：<br>使用conda安装的过程中会一起将cuda和cudnn安装上。<br>详见：<a href="https://zhuanlan.zhihu.com/p/46579831" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/46579831</a></p>
+        <h3 id="问题描述及背景"><a href="#问题描述及背景" class="headerlink" title="问题描述及背景"></a>问题描述及背景</h3><p>使用服务器的时候，希望可以使用两张网卡分别连接内外网。<br>本文中将主要介绍使用<code>Netplan</code>的方法配置两张内外网网卡，以及设置路由。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>首先使用<code>ip a</code>查看网络状态。以确定连接内网的网卡和连接外网的网卡。<br>此处，连接内网的网卡是<code>enp3s0</code>，连接外网的网卡是<code>enp7s0</code>。</p>
+<p>然后配置<code>Netplan</code></p>
+<ul>
+<li><p>打开<code>Netplan</code>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/netplan/*.yaml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加配置信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># Let NetworkManager manage all devices on this system</span><br><span class="line"></span><br><span class="line">network:</span><br><span class="line">  version: 2</span><br><span class="line">#  renderer: NetworkManager  # 注释1</span><br><span class="line">  ethernets:</span><br><span class="line">    enp7s0:</span><br><span class="line">      dhcp4: true</span><br><span class="line">      optional: true</span><br><span class="line">      dhcp4-overrides:</span><br><span class="line">        route-metric: 2</span><br><span class="line">    enp3s0:</span><br><span class="line">      dhcp4: false</span><br><span class="line">      addresses:</span><br><span class="line">        - x.x.x.x/x</span><br><span class="line">#      gateway4: x.x.x.x  # 注释2</span><br><span class="line">      nameservers:</span><br><span class="line">        addresses: [x.x.x.x]</span><br><span class="line">      routes:</span><br><span class="line">        - to: x.x.x.x/x</span><br><span class="line">        via: x.x.x.x</span><br><span class="line">        metric: 36</span><br><span class="line">      optional: true</span><br></pre></td></tr></table></figure>
+<p>通过设置<code>metric</code>可以控制路由的优先级。<code>metric</code>数值越小，优先级越高，数值越大，优先级越低。</p>
+<ul>
+<li>注释1、<code>renderer</code>需要注释掉。否则有些设置不会生效，比如设置的<code>metric</code>。</li>
+<li>注释2、内网网卡的网关不需要设置，如果设置了，每次重启会出现内网网卡通向0.0.0.0/0的默认路由，导致上不了网。</li>
+</ul>
+</li>
+<li><p>启用<code>Netplan</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo netplan apply</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查路由，以及用<code>ping</code>命令查看是否内外网都正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route -n</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>配置成功后，就可以同时使用内外网了。也可以把机器作为跳转机，从外网连接，跳转去内网。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><h5 id="也尝试过其他方法来实现。大概流程是"><a href="#也尝试过其他方法来实现。大概流程是" class="headerlink" title="也尝试过其他方法来实现。大概流程是"></a>也尝试过其他方法来实现。大概流程是</h5><ul>
+<li><p>在<code>/etc/network/interfaces</code>文件中设置内网网卡的静态IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto enp3s0</span><br><span class="line">iface enp3s0 inet static</span><br><span class="line">address 10.3.125.92</span><br><span class="line">netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
+<p>本人的尝试中发现，并不能在<code>/etc/network/interfaces</code>文件中同时设置双网卡的IP。（可能会报错，参考：<a href="https://blog.csdn.net/w294954902/article/details/82628909" title="Restarting networking" target="_blank" rel="noopener">Restarting networking</a>）</p>
+</li>
+<li><p>重启网络服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/networking restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加路由<br>可以使用<code>route add</code>命令，或者<code>ip route add</code>命令。比如，<code>route del -net 0.0.0.0 dev enp3s0</code>，<code>ip route del default via 192.168.1.1 dev enp7s0</code>，<code>ip route add 0.0.0.0/0 via 192.168.1.1 dev enp7s0 metric 2</code><br>具体可以参考：<a href="https://blog.csdn.net/qq_34595352/article/details/82218515" title="Linux中添加路由" target="_blank" rel="noopener">Linux中添加路由</a>，<a href="https://blog.csdn.net/dajiangqingzhou/article/details/82901666" title="Ubuntu设置双网卡路由" target="_blank" rel="noopener">使用route命令设置双网卡路由</a></p>
+</li>
+<li>但是设置过了路由，系统重启，路由就会被重置，所以需要在系统启动时自动执行添加路由的命令。<br>在<code>/etc/rc.local</code>文件中写好配置。可以参考<a href="https://blog.csdn.net/weixin_41534481/article/details/107892325" title="开机自动启动命令" target="_blank" rel="noopener">开机自动启动命令</a>以及<a href="https://blog.csdn.net/qq_45700350/article/details/117062720" title="设置rc.local" target="_blank" rel="noopener">设置rc.local</a>。</li>
+</ul>
+<p>由于过程繁琐，不像<code>Netplan</code>一样可以一步到位的设置。所以最终选择了<code>Netplan</code></p>
+<h5 id="在配置过程中，可能会把网卡弄崩掉。"><a href="#在配置过程中，可能会把网卡弄崩掉。" class="headerlink" title="在配置过程中，可能会把网卡弄崩掉。"></a>在配置过程中，可能会把网卡弄崩掉。</h5><p>可以使用<code>sudo service network-manager restart</code>以及<br><code>sudo /etc/init.d/networking restart</code>命令从头开始。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/hu19921016/article/details/80241325" title="双网卡系统重启时出现默认路由" target="_blank" rel="noopener">双网卡系统重启时出现默认路由</a><br><a href="https://blog.csdn.net/ymz641/article/details/117822232" title="Netplan网络配置工具学习" target="_blank" rel="noopener">Netplan网络配置工具学习</a><br><a href="https://blog.csdn.net/weixin_44444810/article/details/124768090" title="网络优先级设置" target="_blank" rel="noopener">网络优先级设置</a><br><a href="https://blog.csdn.net/weixin_44129085/article/details/109121911" title="双网卡配置优先级" target="_blank" rel="noopener">双网卡配置优先级</a><br><a href="https://blog.csdn.net/weixin_34194379/article/details/92726037" title="Netplan配置双网卡、双路由" target="_blank" rel="noopener">Netplan配置双网卡、双路由</a><br><a href="https://blog.csdn.net/xiaoliang199109/article/details/116376630" title="netplan 配置多网卡、多路由、多ip、bonding" target="_blank" rel="noopener">Netplan 配置多网卡、多路由、多ip、bonding</a><br><a href="https://www.yisu.com/ask/3153.html" title="查看网关" target="_blank" rel="noopener">查看网关</a><br><a href="https://blog.csdn.net/qq_26230847/article/details/119962894" title="查看DNS" target="_blank" rel="noopener">查看DNS</a><br><a href="https://blog.csdn.net/u013066730/article/details/122360169" title="查看网络流量" target="_blank" rel="noopener">查看网络流量</a><br><a href="http://t.zoukankan.com/GaZeon-p-5327506.html" title="重启网卡" target="_blank" rel="noopener">重启网卡</a></p>
 
     </div>
 
@@ -339,41 +342,14 @@ show_channel_urls: true
       <!---->
       
         
-<div class="my_post_copyright">
-  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
-  
-  <!-- JS库 sweetalert 可修改路径 -->
-  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/">Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows</a></p>
-  <p><span>文章作者:</span><a href="/" title="访问 jklf5 的个人博客">jklf5</a></p>
-  <p><span>发布时间:</span>2020年02月19日 - 13:13</p>
-  <p><span>最后更新:</span>2020年02月19日 - 21:00</p>
-  <p><span>原始链接:</span><a href="/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/" title="Tensorflow、CUDA、cuDNN的版本匹配与安装 Windows">https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://jklf5.xyz/2020/02/19/Tensorflow、CUDA、cuDNN的版本匹配与安装-Windows/" aria-label="复制成功！"></i></span>
-  </p>
-  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
-</div>
-<script> 
-    var clipboard = new Clipboard('.fa-clipboard');
-      $(".fa-clipboard").click(function(){
-      clipboard.on('success', function(){
-        swal({   
-          title: "",   
-          text: '复制成功',
-          icon: "success", 
-          showConfirmButton: true
-          });
-        });
-    });  
-</script>
-
       
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Tensorflow/" rel="tag"># Tensorflow</a>
-              <a href="/tags/CUDA/" rel="tag"># CUDA</a>
-              <a href="/tags/cuDNN/" rel="tag"># cuDNN</a>
+              <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+              <a href="/tags/Netplan/" rel="tag"># Netplan</a>
+              <a href="/tags/Network/" rel="tag"># Network</a>
+              <a href="/tags/双网卡/" rel="tag"># 双网卡</a>
+              <a href="/tags/内外网/" rel="tag"># 内外网</a>
           </div>
 
         
@@ -382,13 +358,10 @@ show_channel_urls: true
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/18/模2除法（CRC检验码）/" rel="prev" title="模2除法（CRC检验码）">
-      <i class="fa fa-chevron-left"></i> 模2除法（CRC检验码）
+    <a href="/2022/06/10/Linux系统下解封DenyHost中的IP地址/" rel="prev" title="Linux系统下解封DenyHost中的IP地址">
+      <i class="fa fa-chevron-left"></i> Linux系统下解封DenyHost中的IP地址
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/02/19/Ubuntu18-04LTS-Win10-GPT-UEFI双系统安装/" rel="next" title="Ubuntu18.04LTS+Win10+GPT+UEFI双系统安装">
-      Ubuntu18.04LTS+Win10+GPT+UEFI双系统安装 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -449,7 +422,7 @@ show_channel_urls: true
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、首先说一下安装顺序"><span class="nav-text">一、首先说一下安装顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、安装"><span class="nav-text">二、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、通过pip或者conda都可以安装tensorflow-gpu，可能速度比较慢，耐心等待"><span class="nav-text">1、通过pip或者conda都可以安装tensorflow_gpu，可能速度比较慢，耐心等待</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、CUDA下对版本，默认安装就行"><span class="nav-text">2、CUDA下对版本，默认安装就行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、cuDNN下载时可能需要登录账户"><span class="nav-text">3、cuDNN下载时可能需要登录账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、最后测试自己的tensorflow代码吧"><span class="nav-text">4、最后测试自己的tensorflow代码吧</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、注意"><span class="nav-text">三、注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、另一种更方便的方法（使用Conda）"><span class="nav-text">四、另一种更方便的方法（使用Conda）</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述及背景"><span class="nav-text">问题描述及背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决办法"><span class="nav-text">解决办法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后记"><span class="nav-text">后记</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#也尝试过其他方法来实现。大概流程是"><span class="nav-text">也尝试过其他方法来实现。大概流程是</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在配置过程中，可能会把网卡弄崩掉。"><span class="nav-text">在配置过程中，可能会把网卡弄崩掉。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
