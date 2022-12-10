@@ -213,10 +213,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-06-21 16:22:47 / 修改时间：18:37:09" itemprop="dateCreated datePublished" datetime="2022-06-21T16:22:47+08:00">2022-06-21</time>
+              <time title="创建时间：2022-06-21 16:22:47" itemprop="dateCreated datePublished" datetime="2022-06-21T16:22:47+08:00">2022-06-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-10 12:43:08" itemprop="dateModified" datetime="2022-12-10T12:43:08+08:00">2022-12-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -269,11 +275,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/netplan/*.yaml</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>添加配置信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># Let NetworkManager manage all devices on this system</span><br><span class="line"></span><br><span class="line">network:</span><br><span class="line">  version: 2</span><br><span class="line">#  renderer: NetworkManager  # 注释1</span><br><span class="line">  ethernets:</span><br><span class="line">    enp7s0:</span><br><span class="line">      dhcp4: true</span><br><span class="line">      optional: true</span><br><span class="line">      dhcp4-overrides:</span><br><span class="line">        route-metric: 2</span><br><span class="line">    enp3s0:</span><br><span class="line">      dhcp4: false</span><br><span class="line">      addresses:</span><br><span class="line">        - x.x.x.x/x</span><br><span class="line">#      gateway4: x.x.x.x  # 注释2</span><br><span class="line">      nameservers:</span><br><span class="line">        addresses: [x.x.x.x]</span><br><span class="line">      routes:</span><br><span class="line">        - to: x.x.x.x/x</span><br><span class="line">        via: x.x.x.x</span><br><span class="line">        metric: 36</span><br><span class="line">      optional: true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># Let NetworkManager manage all devices on this system</span><br><span class="line"></span><br><span class="line">network:</span><br><span class="line">  version: 2</span><br><span class="line">#  renderer: NetworkManager  # 注释1</span><br><span class="line">  ethernets:</span><br><span class="line">    enp7s0:</span><br><span class="line">      dhcp4: true</span><br><span class="line">      optional: true</span><br><span class="line">      dhcp4-overrides:</span><br><span class="line">        route-metric: 2</span><br><span class="line">    enp3s0:</span><br><span class="line">      dhcp4: false</span><br><span class="line">      addresses:</span><br><span class="line">        # 注释2</span><br><span class="line">        - x.x.x.x/x</span><br><span class="line">        - x.x.x.x/x</span><br><span class="line">#      gateway4: x.x.x.x  # 注释3</span><br><span class="line">      nameservers:</span><br><span class="line">        addresses: [x.x.x.x]</span><br><span class="line">      routes:</span><br><span class="line">        # 注释4</span><br><span class="line">        - to: x.x.x.x/x</span><br><span class="line">        via: x.x.x.x</span><br><span class="line">        metric: 36</span><br><span class="line">        - to: x.x.x.x/x</span><br><span class="line">        via: x.x.x.x</span><br><span class="line">        metric: 36</span><br><span class="line">      optional: true</span><br></pre></td></tr></table></figure>
 <p>通过设置<code>metric</code>可以控制路由的优先级。<code>metric</code>数值越小，优先级越高，数值越大，优先级越低。</p>
 <ul>
 <li>注释1、<code>renderer</code>需要注释掉。否则有些设置不会生效，比如设置的<code>metric</code>。</li>
-<li>注释2、内网网卡的网关不需要设置，如果设置了，每次重启会出现内网网卡通向0.0.0.0/0的默认路由，导致上不了网。</li>
+<li>注释2、注释4。一张网卡可以设置多个ip地址（注释2），同时可以设置多个路由（注释4）。</li>
+<li>注释3、内网网卡的网关不需要设置，如果设置了，每次重启会出现内网网卡通向0.0.0.0/0的默认路由，导致上不了网。</li>
 </ul>
 </li>
 <li><p>启用<code>Netplan</code></p>
